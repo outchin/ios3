@@ -145,7 +145,7 @@ class _TvSerisDetailsScreenState extends State<TvSerisDetailsScreen> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: CustomTheme.primaryColor,),
                       onPressed: () async {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => PremiumSubscriptionScreen(fromRadioScreen: false, fromLiveTvScreen: true, liveTvID: "1", isPaid: widget.isPaid)),);
+
                       },
                       child: Text("subscribe to Premium", style: CustomTheme.bodyText3White,),
                     ),

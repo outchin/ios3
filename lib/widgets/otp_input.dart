@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pin_put/pin_put.dart';
-import '../../bloc/auth/phone_auth/phone_auth_bloc.dart';
-import '../../bloc/auth/phone_auth/phone_auth_event.dart';
+
 import '../../style/theme.dart';
 import '../../utils/button_widget.dart';
 import '../strings.dart';
@@ -66,8 +65,7 @@ class OtpInput extends StatelessWidget {
             HelpMe().space(30.0),
             GestureDetector(
                 onTap: () {
-                  BlocProvider.of<PhoneAuthBloc>(context)
-                      .add(VerifyOtpEvent(otp: inputPin));
+
                 },
                 child: HelpMe().submitButton(142, AppContent.submit)),
           ],

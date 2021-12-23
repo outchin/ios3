@@ -31,13 +31,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void isUpdateAvailable() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-    String version = packageInfo.version;
-
-    print('ves');
-    String ver = version[0];
-    int appVersionCode = int.parse(ver);
+    // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    //
+    // String version = packageInfo.version;
+    //
+    // print('ves');
+    // String ver = version[0];
+    // int appVersionCode = int.parse(ver);
 
 
     WeatherModel weatherModel = WeatherModel();
@@ -65,7 +65,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
 
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-          return LandingScreen();
+          //return LandingScreen();
+          return AddKeyPage();
         }),
               (route) => false,
         );

@@ -6,10 +6,14 @@ import 'package:oxoo/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:device_info/device_info.dart';
+import 'package:platform_device_id/platform_device_id.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'landing_screen.dart';
 import '../../strings.dart';
+
+
 class AddKeyPage extends StatefulWidget {
   AddKeyPage({this.pageLink});
 
@@ -80,10 +84,11 @@ class _AddKeyPageState extends State<AddKeyPage> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-          String device_id = await getDeviceDetails();
+          String? device_id = await PlatformDeviceId.getDeviceId;
+          print("Device id is");
           print(device_id);
           print(userKey);
-          var checkCodeData = await weatherModel.checkCode(userKey, device_id);
+          var checkCodeData = await weatherModel.checkCode(userKey, device_id!);
           if (checkCodeData == 208) //key is not correct
           {
             showDialog<String>(
@@ -100,12 +105,12 @@ class _AddKeyPageState extends State<AddKeyPage> {
               ),
             );
           } else {
+
             final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
             prefs.setString("userKey", userKey);
             prefs.setString("device_id", device_id);
-            prefs.setString("expire_date", checkCodeData[0]['registration_end_at']);
-            AppContent.expire_date = checkCodeData[0]['registration_end_at'];
+
             //key is correct
             showDialog<String>(
               barrierDismissible: false, // user must tap button!

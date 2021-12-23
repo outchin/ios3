@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 import 'package:hive/hive.dart';
@@ -27,7 +27,7 @@ class MyProfileScreen extends StatefulWidget {
 }
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
-  final FirebaseAuth auth = FirebaseAuth.instance;
+
   final deactivateFormKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
@@ -352,9 +352,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   setPasswordDialog(String? userId, bool? isDark) async {
     //call current userId
-    final User user = auth.currentUser!;
-    final uid = user.uid;
-    print(uid);
+
+
+
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -435,8 +435,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               SubmitResponseModel passwordSetModel =
                                   await (Repository().setUserPassword(
                                           userID: userId,
-                                          password: password,
-                                          firebaseAuthUid: uid)
+                                          password: password)
                                       as FutureOr<SubmitResponseModel>);
                               showShortToast(passwordSetModel.data!);
                               setPasswordController.clear();

@@ -471,15 +471,7 @@ class _LiveTvDetailsScreenState extends State<LiveTvDetailsScreen> {
                         ),
                       ),
                       onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PremiumSubscriptionScreen(
-                                  fromRadioScreen: false,
-                                  fromLiveTvScreen: true,
-                                  liveTvID: widget.liveTvId,
-                                  isPaid: widget.isPaid)),
-                        );
+
                       },
                       child: Text(
                         AppContent.subscribeToPremium,

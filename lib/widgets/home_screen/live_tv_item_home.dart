@@ -107,9 +107,9 @@ Widget buildTVItem(BuildContext context, heading, List<TvChannels>? tvList, bool
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                        tvList[index].tvName!,
+                                        tvList[index].tvName,
                                       overflow: TextOverflow.ellipsis,
-                                      style: isDark! ? CustomTheme.smallTextWhite.copyWith(fontSize: 13) : CustomTheme.smallText.copyWith(fontSize: 13)
+                                      style: isDark ? CustomTheme.smallTextWhite.copyWith(fontSize: 13) : CustomTheme.smallText.copyWith(fontSize: 13)
                                     ),
 
                                   ],

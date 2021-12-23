@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -14,7 +14,6 @@ import '../../screen/search/search_result_screen.dart';
 import '../../screen/settings_screen.dart';
 import '../../screen/subscription/my_subscription_screen.dart';
 import '../../service/authentication_service.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../config.dart';
 import '../constants.dart';
@@ -51,14 +50,14 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
   late TabController _controller;
   int _selectedIndex = 0;
   FocusNode? myFocusNode;
-  final _auth = FirebaseAuth.instance;
+
   AuthService authService = AuthService();
   static bool isDark = false;
   bool activeSearch = false;
   var appModeBox = Hive.box('appModeBox');
   String? userID;
   AuthUser? authUser = AuthService().getUser();
-  final InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
+
   List<String> _kProductIdSubscription = <String>['com.zamoo.livedemo.allaccess'];
 
   @override
@@ -72,7 +71,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
       if (visible == false) activeSearch = false;
     });
     isDark = appModeBox.get('isDark') ?? false;
-    initStoreInfo();
+ 
     // SchedulerBinding.instance!.addPostFrameCallback((_) => configOneSignal(context));
   }
 
@@ -354,11 +353,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
                           actions: <Widget>[
                             GestureDetector(
                                 onTap: () async {
-                                  await _auth.signOut();
-                                  if (authService.getUser() != null) authService.deleteUser();
-                                  //subscription key will be deleted here
-                                  Navigator.of(dialogContext).pushAndRemoveUntil(
-                                      MaterialPageRoute(builder: (dialogContext) => RenderFirstScreen()), (Route<dynamic> route) => false);
+
                                 },
                                 child: HelpMe().accountDeactivate(60, AppContent.yesText, height: 30.0)),
                             SizedBox(width: 8.0),
@@ -404,11 +399,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
                           actions: <Widget>[
                             GestureDetector(
                                 onTap: () async {
-                                  await _auth.signOut();
-                                  if (authService.getUser() != null) authService.deleteUser();
-                                  //subscription key will be deleted here
-                                  Navigator.of(dialogContext).pushAndRemoveUntil(
-                                      MaterialPageRoute(builder: (dialogContext) => RenderFirstScreen()), (Route<dynamic> route) => false);
+
                                 },
                                 child: HelpMe().accountDeactivate(60, AppContent.yesText, height: 30.0)),
                             SizedBox(width: 8.0),
@@ -510,48 +501,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
         });
   }
 
-  Future<void> initStoreInfo() async {
-    printLog("Inside_initStore!");
-    final bool isAvailable = await _connection.isAvailable();
-    if (!isAvailable) {
-      printLog("connection_not_available");
-      return;
-    }
 
-    ProductDetailsResponse productDetailResponse = await _connection.queryProductDetails(_kProductIdSubscription.toSet());
-    if (productDetailResponse.error != null) {
-      printLog("productDetailResponse_Error");
-      return;
-    }
 
-    if (productDetailResponse.productDetails.isEmpty) {
-      printLog("product_details_empty");
-      return;
-    }
 
-    final QueryPurchaseDetailsResponse purchaseResponse = await _connection.queryPastPurchases();
-    if (purchaseResponse.error != null) {}
-    final List<PurchaseDetails> verifiedPurchases = [];
-    for (PurchaseDetails purchase in purchaseResponse.pastPurchases) {
-      print(purchase.productID);
-      if (await _verifyPurchase(purchase)) {
-        print("_verifyPurchase_ok");
-        appModeBox.put("isUserValidSubscriber", true);
-        verifiedPurchases.add(purchase);
-      }
-    }
-  }
-
-  Future<bool> _verifyPurchase(PurchaseDetails purchaseDetails) {
-    printLog("purchase:${purchaseDetails.productID}");
-    if (Platform.isAndroid) {
-      return Repository().verifyMarketInApp(
-        signature: purchaseDetails.billingClientPurchase!.signature,
-        signedData: purchaseDetails.billingClientPurchase!.originalJson,
-        publicKey: Config.publicKeyBase64,
-      );
-    } else {
-      return Future<bool>.value(true);
-    }
-  }
 }

@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+
 import '../../screen/auth/auth_screen.dart';
 import '../../screen/subscription/premium_subscription_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -67,15 +67,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     SystemChrome.setEnabledSystemUIOverlays([]);
     _permissionReady = false;
     _prepare();
-    FlutterDownloader.registerCallback(downloadCallback);
+
   }
 
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port')!;
-    send.send([id, status, progress]);
-  }
+
 
   _prepare() async {
     _localPath = (await _findLocalPath()) + Platform.pathSeparator + 'Download';
@@ -99,16 +94,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     return directory.path;
   }
 
-  Future<dynamic> downloadVideo(String videoUrl, String fileName) async {
-    if (_permissionReady) {
-      await FlutterDownloader.enqueue(
-          url: videoUrl,
-          savedDir: _localPath!,
-          fileName: fileName,
-          showNotification: true,
-          openFileFromNotification: true);
-    }
-  }
+
 
   ///Getting  Audio File Directory
   Future<List> getTotalDownloadedFile() async {
@@ -720,12 +706,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       style: ElevatedButton.styleFrom(
                         primary: CustomTheme.primaryColor,),
                       onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  PremiumSubscriptionScreen()),
-                        );
+
                       },
                       child: Text(
                         AppContent.subscribeToPremium,

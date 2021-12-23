@@ -1,10 +1,9 @@
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+
 import 'package:hive/hive.dart';
 import 'package:flutter/foundation.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
+
 import 'package:path_provider/path_provider.dart';
 import '../../service/get_config_service.dart';
 import 'app.dart';
@@ -15,8 +14,8 @@ import 'service/locator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await FlutterDownloader.initialize();
+
+
 
   final document = await getApplicationDocumentsDirectory();
   Hive.init(document.path);
@@ -42,7 +41,8 @@ Future<void> main() async {
   GetConfigService().updateGetConfig(configurationModel);
   setupLocator();
   if (defaultTargetPlatform == TargetPlatform.android) {
-    InAppPurchaseConnection.enablePendingPurchases();
+
   }
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }

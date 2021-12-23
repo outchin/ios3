@@ -57,7 +57,7 @@ class _MySubscriptionScreenState extends State<MySubscriptionScreen> {
             ),
             _space(40),
             InkWell(
-                onTap: () {Navigator.pushNamed(context, PremiumSubscriptionScreen.route);},
+                onTap: () { },
                 child: HelpMe().submitButton(300,AppContent.upgradePurchase)),
           ],
         ),
