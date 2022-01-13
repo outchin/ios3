@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
 import '../../service/get_config_service.dart';
 import 'app.dart';
 import 'data/repository/config_repository.dart';
@@ -17,8 +17,8 @@ Future<void> main() async {
 
 
 
-  final document = await getApplicationDocumentsDirectory();
-  Hive.init(document.path);
+  // final document = await getApplicationDocumentsDirectory();
+  // Hive.init(document.path);
   // Hive not only supports primitives, lists and maps but also any Dart object you like. You need to generate a type adapter before you can store objects.
   Hive.registerAdapter(ConfigurationModelAdapter());
   Hive.registerAdapter(AppConfigAdapter());

@@ -12,15 +12,9 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
   @override
   Future<ConfigurationModel> getConfigurationData() async {
     var url = ConfigApi().getApiUrl() + "/config?device_id=&code=";
-    var response = await http.get(Uri.parse(url), headers: ConfigApi().getHeaders());
 
-    print("my api url is");
-    print(url);
+    var response = await http.get(Uri.parse(url));
 
-    print("our response isss");
-    print(response);
-
-    printLog(response.statusCode);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       ConfigurationModel configuration = ConfigurationModel.fromJson(data);
@@ -29,4 +23,7 @@ class ConfigurationRepositoryImpl implements ConfigurationRepository {
       throw Exception();
     }
   }
+
+
+
 }

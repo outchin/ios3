@@ -68,7 +68,7 @@ class GenreScreen extends StatelessWidget {
               return spinkit;
             },
             pageFuture: (pageIndex) {
-              print(pageIndex);
+
               String pageNumber = (pageIndex! * PAGE_NUMBER + 1).toString();
               return Repository().getGenreList(pageNumber).then((value) => value!);
             }),

@@ -7,7 +7,7 @@ import '../../utils/button_widget.dart';
 
 class SelectDownloadDialog {
   createDialog(context, List<DownloadLinks> downloadLinks, bool? isDark, Function function) {
-    print(downloadLinks.length);
+
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -48,7 +48,7 @@ class SelectDownloadDialog {
                                 padding: const EdgeInsets.symmetric(vertical: 4),
                                 child: InkWell(
                                   onTap: () {
-                                    // print(downloadLinks.elementAt(index).downloadUrl);
+
                                     HelpMe().launchURL(downloadLinks.elementAt(index).downloadUrl!);
                                     Navigator.of(context).pop();
                                   },
@@ -86,7 +86,7 @@ class SelectDownloadDialog {
                                       String label = downloadLinks.elementAt(index).label!;
                                       label = label.toLowerCase();
                                       label = label + ".$fileType";
-                                      print("------------$label");
+
                                       function(downloadLinks.elementAt(index).downloadUrl, label);
                                     } else {
                                       launch(downloadLinks.elementAt(index).downloadUrl!);

@@ -23,7 +23,7 @@ class _MovieDetailsYoutubePlayerState extends State<MovieDetailsYoutubePlayer> {
     super.initState();
      _url = widget.url;
 
-    print(_url);
+
     youtubeVideoID = YoutubePlayer.convertUrlToId(_url!);
     if(youtubeVideoID != null){
       controller = YoutubePlayerController(
@@ -88,7 +88,7 @@ class _MovieDetailsYoutubePlayerState extends State<MovieDetailsYoutubePlayer> {
               const SizedBox(width: 8.0),
               InkWell(
                   onTap: (){
-                    print("Setting Icon Pressed");
+
                   },
                   child: Icon(Icons.settings,color:Colors.white,)),
               const SizedBox(width: 14.0),

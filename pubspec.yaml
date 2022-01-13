@@ -65,6 +65,7 @@ dependencies:
   sign_in_with_apple: ^3.0.0
   url_launcher: ^6.0.9
   video_player: 2.1.5
+  video_player_web_hls: ^0.1.1
   webview_flutter: ^2.0.9
   youtube_player_flutter: ^8.0.0
   device_info: ^2.0.2

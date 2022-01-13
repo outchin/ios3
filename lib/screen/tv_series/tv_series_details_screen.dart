@@ -54,7 +54,7 @@ class _TvSerisDetailsScreenState extends State<TvSerisDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    printLog("_TvSerisDetailsScreenState");
+
 
     final configService = Provider.of<GetConfigService>(context);
     PaymentConfig? paymentConfig = configService.paymentConfig();
@@ -80,7 +80,7 @@ class _TvSerisDetailsScreenState extends State<TvSerisDetailsScreen> {
                 });
               } else {
                 tvSeriesDetailsModel = state.tvSeriesDetailsModel;
-                print("isPaid:${tvSeriesDetailsModel!.isPaid}");
+
                 if (!isUserValidSubscriber && tvSeriesDetailsModel!.isPaid == "1") {
                   return Scaffold(
                     backgroundColor: isDark! ? CustomTheme.black_window : Colors.white,
@@ -336,7 +336,7 @@ class _TvSerisDetailsScreenState extends State<TvSerisDetailsScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () {
-                                print("tapped_on_episodeItem_card");
+
                                 _url = selectedSeason!.episodes![index].fileUrl;
                                 isSeriesPlaying = true;
                                 setState(() {});
@@ -453,7 +453,7 @@ class _TvSerisDetailsScreenState extends State<TvSerisDetailsScreen> {
                         style: ElevatedButton.styleFrom(
                           primary: isDark! ? CustomTheme.grey_transparent2 : Colors.grey.shade300,),
                         onPressed: () {
-                          print("Add Comments Pressed ");
+
                         },
                         child: Text(
                           AppContent.addComments,

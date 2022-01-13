@@ -17,7 +17,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       yield RegistrationFailedState();
     } else if (event is RegistrationCompleting) {
       final user = event.user;
-      printLog(user);
+
       AuthUser? userServerData = await repository.getRegistrationAuthUser(
         name: user.name,
         email: user.email,

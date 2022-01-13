@@ -90,14 +90,14 @@ class RenderFirstScreen extends StatelessWidget {
       valueListenable: Hive.box<ConfigurationModel>('configBox').listenable(),
       builder: (context, dynamic box, widget) {
         isMandatoryLogin = box.get(0).appConfig.mandatoryLogin;
-        printLog("isMandatoryLogin " + "$isMandatoryLogin");
+
         return renderFirstScreen(isMandatoryLogin!);
       },
     );
   }
 
   Widget renderFirstScreen(bool isMandatoryLogin) {
-    print(isMandatoryLogin);
+
     if (isMandatoryLogin) {
       return LoadingScreen();
     } else {

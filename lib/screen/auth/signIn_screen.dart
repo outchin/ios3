@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-    printLog("_LoginPageState");
+
     final authService = Provider.of<AuthService>(context);
     _isLogged = authService.getUser() != null ? true : false;
     return !_isLogged

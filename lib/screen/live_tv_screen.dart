@@ -34,7 +34,7 @@ class _LiveTvScreenState extends State<LiveTvScreen> {
 
   @override
   Widget build(BuildContext context) {
-    printLog("_LiveTvScreenState");
+
     final bool isFromMenu = ModalRoute.of(context)!.settings.arguments as bool? ?? false;
     return Scaffold(
       backgroundColor: isDark! ? CustomTheme.primaryColorDark : Colors.transparent,

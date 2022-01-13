@@ -32,7 +32,7 @@ class _TvSeriesScreenState extends State<TvSeriesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    printLog("_TvSeriesScreenState");
+
     final bool isFromMenu = ModalRoute.of(context)!.settings.arguments != null;
 
     return Scaffold(
@@ -52,7 +52,7 @@ class _TvSeriesScreenState extends State<TvSeriesScreen> {
               return Center(child: spinkit);
             },
             pageFuture: (pageIndex) {
-              print(pageIndex);
+
               String pageNumber = (pageIndex! * PAGE_NUMBER + 1).toString();
               return Repository().getAllTVSeries(pageNumber).then((value) => value!);
             }),

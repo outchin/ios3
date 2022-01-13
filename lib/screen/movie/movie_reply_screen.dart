@@ -21,11 +21,11 @@ class _MovieReplyScreenState extends State<MovieReplyScreen> {
   late bool isDark;
   @override
   Widget build(BuildContext context) {
-    printLog("_MovieReplyScreenState");
+
     final routes =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     isDark = routes['isDark'] ?? false;
-    // print(routes['commentsID']);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppContent.reply),

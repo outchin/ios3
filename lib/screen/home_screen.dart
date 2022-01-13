@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //         child: Text(AppContent.somethingWentWrong),
       //       );
       //     } else if (state is HomeContentLoadedState) {
-      //       printLog("--------home content data loaded");
+
 
       //       return buildUI(context: context, authUser: authUser, paymentConfig: paymentConfig, homeContent: state.homeContent);
       //     }

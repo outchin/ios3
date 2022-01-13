@@ -45,7 +45,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    printLog("_SettingScreenState");
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppContent.settings),
@@ -190,7 +190,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   setState(() {
                     output = onValue;
                   });
-                  print(onValue);
+
                 });
               },
               child: Padding(

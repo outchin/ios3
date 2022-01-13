@@ -67,7 +67,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
     super.initState();
     myFocusNode = FocusNode();
     KeyboardVisibilityController().onChange.listen((bool visible) {
-      print('Keyboard visibility update. Is visible: $visible');
+
       if (visible == false) activeSearch = false;
     });
     isDark = appModeBox.get('isDark') ?? false;
@@ -93,7 +93,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
   }
 
   void _handleSubmitted(String value) {
-    printLog("trying_to_submit$value");
+
     if (value.length > 0) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(queryText: value, isDark: isDark)));
     }
@@ -104,7 +104,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
   //   OneSignal.shared.setNotificationOpenedHandler((notification) {
   //     String? id = notification.notification.additionalData!["id"];
   //     String? type = notification.notification.additionalData!["vtype"];
-  //     printLog("---------ID and Type: {$id $type}");
+
   //
   //     switch (type) {
   //       case "tv":
@@ -133,7 +133,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
   //         _launchURL(id!);
   //         break;
   //       default:
-  //         print("type_is_not_movie_event_radio_tv !");
+
   //         break;
   //     }
   //   });
@@ -149,7 +149,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    printLog("_LandingScreenState");
+
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -316,7 +316,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
               ),
             ),
             onTap: () {
-              printLog("index$index");
+
               setState(() {
                 if (savedIndex != -1) {
                   drawerListItem.elementAt(savedIndex).isSelected = false;
@@ -466,7 +466,7 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
               ),
             ),
             onTap: () {
-              printLog("index $index");
+
               setState(() {
                 if (savedIndex != -1) {
                   drawerListItem.elementAt(savedIndex).isSelected = false;

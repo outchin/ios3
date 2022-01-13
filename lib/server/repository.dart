@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import '../../models/favourite_response_model.dart';
@@ -28,6 +29,9 @@ import '../../models/user_model.dart';
 import '../../network/api_configuration.dart';
 import '../../utils/validators.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
+import '../constants.dart';
 class Repository {
   Dio dio = Dio();
 
@@ -44,7 +48,7 @@ class Repository {
         return null;
       }
     } catch (e) {
-      print(e);
+
       return null;
     }
   }
@@ -54,8 +58,8 @@ class Repository {
     FormData formData = new FormData.fromMap({"email": email, "password": password, "name": name});
     try {
       final response = await dio.post("${ConfigApi().getApiUrl()}/signup", data: formData);
-      print(response);
-      print("Registration_aPI");
+
+
       AuthUser user = AuthUser.fromJson(response.data);
       if (user.status == 'success') {
         return user;
@@ -64,7 +68,7 @@ class Repository {
         return null;
       }
     } catch (e) {
-      print(e);
+
       return null;
     }
   }
@@ -90,7 +94,7 @@ class Repository {
         return null;
       }
     } catch (e) {
-      print(e);
+
       return null;
     }
   }
@@ -117,7 +121,7 @@ class Repository {
     });
     try {
       final response = await dio.post("${ConfigApi().getApiUrl()}/set_password?id=$userID", data: formData);
-      print(response);
+
       if (response.statusCode == 200) {
         SubmitResponseModel submitResponseModel = SubmitResponseModel.fromJson(response.data);
         return submitResponseModel;
@@ -132,7 +136,7 @@ class Repository {
     FormData formData = FormData.fromMap({"email": userEmail});
     try {
       final response = await dio.post("${ConfigApi().getApiUrl()}/password_reset", data: formData);
-      print(response);
+
       if (response.statusCode == 200) {
         PasswordResetModel submitResponseModel = PasswordResetModel.fromJson(response.data);
         return submitResponseModel;
@@ -164,26 +168,48 @@ class Repository {
   }
 
   Future<List<MovieModel>?> getAllMovies(String pageNumber) async {
-    dio.options.headers = ConfigApi().getHeaders();
+    // dio.options.headers = ConfigApi().getHeaders();
     try {
-      print("this is movie api");
-      print("${ConfigApi().getApiUrl()}/movies?page=$pageNumber");
+
+
+
 
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       String userKey = prefs.getString("userKey") ?? "";
       String device_id = prefs.getString("device_id") ?? "";
-
-      final response = await dio.get("${ConfigApi().getApiUrl()}/movies?code=$userKey&device_id=$device_id");
+      String value = "${ConfigApi().getApiUrl()}/movies?page=$pageNumber&code=$userKey&device_id=$device_id&os_type=ios";
+      final response = await http.get(Uri.parse(value));
       if (response.statusCode == 200) {
-        MovieListModel mobilistModel = MovieListModel.fromJson(response.data);
+        var data = json.decode(response.body);
+        MovieListModel mobilistModel = MovieListModel.fromJson(data);
         return mobilistModel.movieList;
       }
     } catch (ex) {
-      print(ex.toString());
       return null;
     }
   }
+
+  Future<dynamic> checkCode4(String code,String device_id) async{
+    try{
+
+      String value = "$API_URL/checkCode4?code=$code&device_id=$device_id&type=ios";
+      final response = await http.get(Uri.parse(value));
+      if (response.statusCode == 200) {
+
+        String data = response.body;
+        var decodedData = jsonDecode(data);
+        return decodedData;
+      }else{
+        return false;
+      }
+    }catch(ex){
+      return null;
+    }
+
+  }
+
+
 
   Future<List<MovieModel>?> getMovieByGenereID(String pageNumber, String? genereID) async {
     dio.options.headers = ConfigApi().getHeaders();
@@ -222,7 +248,6 @@ class Repository {
         return null;
       }
     } catch (e) {
-      print("-----------Error from getAllLiveTV: " + e.toString());
       return null;
     }
   }
@@ -239,7 +264,6 @@ class Repository {
         return null;
       }
     } catch (e) {
-      print("-----------Error from getAllLiveTV: " + e.toString());
       return null;
     }
   }
@@ -252,17 +276,20 @@ class Repository {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       String userKey = prefs.getString("userKey") ?? "";
       String device_id = prefs.getString("device_id") ?? "";
-      print("tv details data link " + "${ConfigApi().getApiUrl()}/single_details?type=tv&id=$liveTvId&device_id=$device_id&code=$userKey");
-      dio.options.headers = ConfigApi().getHeaders();
-      final response = await dio.get("${ConfigApi().getApiUrl()}/single_details?type=tv&id=$liveTvId&device_id=$device_id&code=$userKey");
+
+      // dio.options.headers = ConfigApi().getHeaders();
+      String value = "${ConfigApi().getApiUrl()}/single_details?type=tv&id=$liveTvId&device_id=$device_id&code=$userKey";
+      final response = await http.get(Uri.parse(value));
       if (response.statusCode == 200) {
-        String expire_date = response.data['expire_date'];
+        var data = json.decode(response.body);
+        String expire_date = data['expire_date'];
         prefs.setString("expire_date", expire_date);
 
-        LiveTvDetailsModel liveTvDetailsModel = LiveTvDetailsModel.fromJson(response.data);
+        LiveTvDetailsModel liveTvDetailsModel = LiveTvDetailsModel.fromJson(data);
         return liveTvDetailsModel;
       }else if(response.statusCode == 201){  //expire
-        String expire_date = response.data['expire_date'];
+        var data = json.decode(response.body);
+        String expire_date = data['expire_date'];
         prefs.setString("expire_date", expire_date);
         return null;
       }
@@ -280,7 +307,6 @@ class Repository {
         return seriesList.movieList;
       }
     } catch (ex) {
-      print(ex);
       return null;
     }
   }
@@ -292,10 +318,8 @@ class Repository {
           ? await dio.get("${ConfigApi().getApiUrl()}/single_details?type=tvseries&id=$seriesId&user_id=$userId")
           : await dio.get("${ConfigApi().getApiUrl()}/single_details?type=tvseries&id=$seriesId");
 
-      print(response.statusCode);
       if (response.statusCode == 200) {
         TvSeriesDetailsModel tvSeriesDetailsModel = TvSeriesDetailsModel.fromJson(response.data);
-        print(tvSeriesDetailsModel.title);
         return tvSeriesDetailsModel;
       }
     } catch (ex) {
@@ -347,8 +371,6 @@ class Repository {
       final response = await dio.get("${ConfigApi().getApiUrl()}/all_country");
       if (response.statusCode == 200) {
         CountryListModel countryListModel = CountryListModel.fromJson(response.data);
-        print(countryListModel.allCountry.length);
-        print("Testing_Genre");
         return countryListModel.allCountry;
       }
     } catch (ex) {
@@ -361,20 +383,18 @@ class Repository {
     String userKey = prefs.getString("userKey") ?? "";
     String device_id = prefs.getString("device_id") ?? "";
 
-    dio.options.headers = ConfigApi().getHeaders();
-    print("movie details data link " + "${ConfigApi().getApiUrl()}/single_details?type=movie&id=$movieId&device_id=$device_id&code=$userKey");
-    final response = await dio.get("${ConfigApi().getApiUrl()}/single_details?type=movie&id=$movieId&device_id=$device_id&code=$userKey");
+    // dio.options.headers = ConfigApi().getHeaders();
+
+    String value = "${ConfigApi().getApiUrl()}/single_details?type=movie&id=$movieId&device_id=$device_id&code=$userKey";
+
+    final response = await http.get(Uri.parse(value));
+
     if (response.statusCode == 200) {
-      String expire_date = response.data['expire_date'];
+      var data = json.decode(response.body);
+      String expire_date = data['expire_date'];
       prefs.setString("expire_date", expire_date);
 
-      MovieDetailsModel movieDetailsModel = MovieDetailsModel.fromJson(response.data);
-      return movieDetailsModel;
-    }else if (response.statusCode == 201) {
-      String expire_date = response.data['expire_date'];
-      prefs.setString("expire_date", expire_date);
-      
-      MovieDetailsModel movieDetailsModel = MovieDetailsModel.fromJson(response.extra);
+      MovieDetailsModel movieDetailsModel = MovieDetailsModel.fromJson(data);
       return movieDetailsModel;
     } else {
       throw Exception("Can't fetch movie data");
@@ -385,8 +405,6 @@ class Repository {
     try {
       final response = await dio.get("${ConfigApi().getApiUrl()}/search?q=$query&type=null&range=null");
 
-      print("response");
-      print(response);
 
       if (response.statusCode == 200) {
         SearchResultModel searchResultModel = SearchResultModel.fromJson(response.data);
@@ -413,7 +431,6 @@ class Repository {
   }
 
   Future<List<FavouriteModel>?> favouriteData(String? userID, String pageNumber) async {
-    print("userID:$userID");
     dio.options.headers = ConfigApi().getHeaders();
     try {
       final response = await dio.get("${ConfigApi().getApiUrl()}favorite?user_id=$userID");
@@ -476,7 +493,6 @@ class Repository {
         return allCommentModelList;
       }
     } catch (ex) {
-      print(ex);
       return null;
     }
   }
@@ -490,7 +506,6 @@ class Repository {
         return addCommentsModel;
       }
     } catch (ex) {
-      print(ex);
       return null;
     }
   }
@@ -502,7 +517,6 @@ class Repository {
       AllReplyModelList allReplyModel = AllReplyModelList.fromJson(response.data);
       return allReplyModel;
     } catch (ex) {
-      print(ex);
       return null;
     }
   }
@@ -514,7 +528,6 @@ class Repository {
       AddReplyModel addReplyModel = AddReplyModel.fromJson(response.data);
       return addReplyModel;
     } catch (ex) {
-      print(ex.toString());
     }
   }
 
@@ -525,7 +538,6 @@ class Repository {
       AllReplyModelList allReplyModel = AllReplyModelList.fromJson(response.data);
       return allReplyModel;
     } catch (ex) {
-      print(ex);
       return null;
     }
   }
@@ -538,21 +550,18 @@ class Repository {
       AddReplyModel addReplyModel = AddReplyModel.fromJson(response.data);
       return addReplyModel;
     } catch (ex) {
-      print(ex.toString());
     }
   }
 
   //End comment to event section
 
   Future<TvConnectionModel?> tvConnectionCode({String? userId}) async {
-    print("userId:$userId");
     dio.options.headers = ConfigApi().getHeaders();
     try {
       final response = await dio.get("${ConfigApi().getApiUrl()}tv_connection_code?id=$userId");
       TvConnectionModel tvConnectionModel = TvConnectionModel.fromJson(response.data);
       return tvConnectionModel;
     } catch (ex) {
-      print(ex.toString());
     }
   }
 
@@ -562,7 +571,6 @@ class Repository {
       final response = await dio.get("${ConfigApi().getApiUrl()}/all_package");
       return AllPackageModel.fromJson(response.data);
     } catch (ex) {
-      print(ex.toString());
     }
   }
 
@@ -577,7 +585,6 @@ class Repository {
         return deactivate;
       }
     } catch (e) {
-      print(e);
       return null;
     }
   }
@@ -601,7 +608,6 @@ class Repository {
     try {
       final response = await dio.post("${ConfigApi().getApiUrl()}/store_payment_info/", data: formData);
       if (response.statusCode == 200) {
-        print("Update_Active_Status");
         return true;
       }
     } catch (ex) {
@@ -625,7 +631,6 @@ class Repository {
         return false;
       }
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -645,7 +650,6 @@ class Repository {
         return false;
       }
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -656,24 +660,26 @@ class Repository {
     String device_id = prefs.getString("device_id") ?? "";
 
     late HomeContent homeContent;
-    dio.options.headers = ConfigApi().getHeaders();
-    print("here isis si si si");
-    print(ConfigApi().getApiUrl() + "/home_content_for_android?device_id=$device_id&code=$userKey");
+    // dio.options.headers = ConfigApi().getHeaders();
     try {
-      final response = await dio.get(ConfigApi().getApiUrl() + "/home_content_for_android?device_id=$device_id&code=$userKey");
-      print("status code is");
-      print(response.statusCode);
+       String value = ConfigApi().getApiUrl() + "/home_content_for_android?device_id=$device_id&code=$userKey";
+       //String value = "https://iose.djduduchat.com/home_content_for_android?device_id=111&code=Kh9Bw2";
+      final response = await http.get(Uri.parse(value));
+
       if (response.statusCode == 200) {
-        homeContent = HomeContent.fromJson(response.data);
+        var data = json.decode(response.body);
+        homeContent = HomeContent.fromJson(data);
       }else if(response.statusCode == 201){  //expire
-        homeContent = HomeContent.fromJson(response.data);
+        var data = json.decode(response.body);
+        homeContent = HomeContent.fromJson(data);
       }else if(response.statusCode == 208){  //use by another device
-        homeContent = HomeContent.fromJson(response.extra);
+
+        var data = json.decode(response.body);
+        homeContent = HomeContent.fromJson(data);
       }
       return homeContent;
     } catch (e) {
-      print("Exception is");
-      print(e);
+
       throw Exception();
     }
   }

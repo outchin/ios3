@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import '../../strings.dart';
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../style/theme.dart';
@@ -27,11 +27,11 @@ class _DownloadScreenState extends State<DownloadScreen> {
   Future<String?> _findLocalPath() async {
     _permissionReady = await _checkPermission();
     if (_permissionReady) {
-      print("InsidePermissionReady");
-      final directory = platform == TargetPlatform.android
-          ? await (getExternalStorageDirectory() as FutureOr<Directory>)
-          : await getApplicationDocumentsDirectory();
-      return directory.path;
+
+      // final directory = platform == TargetPlatform.android
+      //     ? await (getExternalStorageDirectory() as FutureOr<Directory>)
+      //     : await getApplicationDocumentsDirectory();
+      // return directory.path;
     }
   }
 
@@ -55,23 +55,23 @@ class _DownloadScreenState extends State<DownloadScreen> {
   _prepare() async {
     _localPath =
         (await _findLocalPath())! + Platform.pathSeparator + 'Downloadd';
-    print(_localPath);
+
     final savedDir = Directory(_localPath!);
     bool hasExisted = await savedDir.exists();
     if (!hasExisted) {
       savedDir.create();
     }
     fileList = await getTotalDownloadedFile();
-    print(fileList.length);
+
     setState(() {
       _isLoading = false;
     });
-    print(_isLoading);
+
   }
 
   ///Getting Arabic Audio File Directory
   Future<List> getTotalDownloadedFile() async {
-    print(_localPath);
+
     return Directory('$_localPath').list().toList();
   }
 
@@ -87,7 +87,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    printLog("_DownloadScreenState");
+
     platform = Theme.of(context).platform;
     return Scaffold(
       appBar: AppBar(
@@ -127,8 +127,7 @@ class _DownloadScreenState extends State<DownloadScreen> {
                             onTap: () async {
                               File file =
                                   await _localFile(videoName: '/fileName.mp4');
-                              print(await file.lastModified());
-                              print(file.lengthSync());
+
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

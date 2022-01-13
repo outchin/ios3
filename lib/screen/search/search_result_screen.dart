@@ -20,7 +20,7 @@ class SearchResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    printLog("SearchResultScreen");
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor:

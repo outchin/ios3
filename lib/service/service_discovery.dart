@@ -12,7 +12,7 @@
 //             onDiscoveryStopped: () => {},
 //             onDiscovered: (ServiceInfo serviceInfo) => {},
 //             onResolved: (ServiceInfo serviceInfo) {
-//               print('found device ${serviceInfo.toString()}');
+
 //               foundServices.add(serviceInfo);
 //               notifyListeners();
 //             }));

@@ -11,10 +11,9 @@ class HomeContentRepositoryImpl implements HomeContentRepository {
   @override
   Future<HomeContent> getHomeContentData() async {
     var url = ConfigApi().getApiUrl() + "/home_content_for_android";
-    print('my home content for andorid url is');
-    print(url);
+
     var response =
-        await http.get(Uri.parse(url), headers: ConfigApi().getHeaders());
+        await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       var data = json.decode(response.body);

@@ -10,6 +10,7 @@ import 'package:platform_device_id/platform_device_id.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../server/repository.dart';
 import 'landing_screen.dart';
 import '../../strings.dart';
 
@@ -85,11 +86,18 @@ class _AddKeyPageState extends State<AddKeyPage> {
         elevation: 5.0,
         onPressed: () async {
           String? device_id = await PlatformDeviceId.getDeviceId;
-          print("Device id is");
-          print(device_id);
-          print(userKey);
-          var checkCodeData = await weatherModel.checkCode(userKey, device_id!);
-          if (checkCodeData == 208) //key is not correct
+          String? dev_id =device_id?.replaceAll(" ", "");
+          dev_id =dev_id?.replaceAll(",", "");
+          dev_id =dev_id?.replaceAll("/", "");
+          dev_id =dev_id?.replaceAll(".", "");
+          dev_id =dev_id?.replaceAll(";", "");
+          dev_id =dev_id?.replaceAll(")", "");
+          dev_id =dev_id?.replaceAll("(", "");
+
+
+          print("my device id " + dev_id.toString());
+          var checkCodeData = await Repository().checkCode4(userKey, dev_id!);
+          if (checkCodeData == false) //key is not correct
           {
             showDialog<String>(
               context: context,
@@ -109,7 +117,7 @@ class _AddKeyPageState extends State<AddKeyPage> {
             final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
             prefs.setString("userKey", userKey);
-            prefs.setString("device_id", device_id);
+            prefs.setString("device_id", dev_id);
 
             //key is correct
             showDialog<String>(
@@ -244,7 +252,7 @@ class _AddKeyPageState extends State<AddKeyPage> {
         identifier = data.identifierForVendor; //UUID for iOS
       }
     } on PlatformException {
-      print('Failed to get platform version');
+
     }
 
 //if (!mounted) return;

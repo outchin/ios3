@@ -39,7 +39,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   @override
   Widget build(BuildContext context) {
-    printLog("_ResetPasswordState");
+
     return new Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(

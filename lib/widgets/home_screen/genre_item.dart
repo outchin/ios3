@@ -34,7 +34,7 @@ class HomeScreenGenreList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    printLog("HomeScreenGenreList");
+
     return Container(
         );
   }
