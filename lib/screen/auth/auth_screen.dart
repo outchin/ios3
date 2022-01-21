@@ -9,7 +9,7 @@ import '../../utils/button_widget.dart';
 
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+// import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../bloc/auth/firebase_auth/firebase_auth_bloc.dart';
 import '../../bloc/auth/firebase_auth/firebase_auth_event.dart';
 import '../../bloc/auth/firebase_auth/firebase_auth_state.dart';
