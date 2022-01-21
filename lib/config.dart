@@ -8,6 +8,7 @@ class Config {
   //static String apiKey                    = "5079ea5049d45b7";
   //set your onesignalID here
   static String oneSignalID               = "xxxxx-xxxx-xxxx-xxxx-xxxxxxx";
+  //yapar say byar
   //set term and conditaions url here
   // static String termsPolicyUrl            = "https://spagreen.net/tearms-of-services/";
   static String termsPolicyUrl            = "https://iose.djduduchat.com/terms/";
