@@ -48,7 +48,7 @@ class _AllCountryScreenState extends State<AllCountryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    printLog("_AllCountryScreenState");
+
     final bool isFromMenu = ModalRoute.of(context)!.settings.arguments as bool;
     return Scaffold(
       backgroundColor: isDark ? CustomTheme.primaryColorDark : Colors.transparent,
@@ -81,7 +81,7 @@ class _AllCountryScreenState extends State<AllCountryScreen> {
               return spinkit;
             },
             pageFuture: (pageIndex) {
-              print(pageIndex);
+
               String pageNumber = (pageIndex! * PAGE_NUMBER + 1).toString();
               return Repository().getCountryList(pageNumber).then((value) => value!);
             }),

@@ -50,7 +50,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
   //       Navigator.pushNamed(context, MovieDetailScreen.route, arguments: {"movieID": currentMovieId});
   //       break;
   //     case AdmobAdEvent.failedToLoad:
-  //       print('Admob $adType failed to load. :(');
+
   //       break;
   //     default:
   //   }
@@ -64,7 +64,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    printLog("_MoviesScreenState");
+
     final Object isFromMenu = ModalRoute.of(context)!.settings.arguments != null;
     return Scaffold(
       backgroundColor: isDark! ? CustomTheme.primaryColorDark : CustomTheme.whiteColor,
@@ -89,7 +89,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
           return spinkit;
         },
         pageFuture: (pageIndex) {
-          print(pageIndex);
+
           String pageNumber = (pageIndex! * PAGE_NUMBER + 1).toString();
           return Repository().getAllMovies(pageNumber).then((value) => value!);
         });
@@ -110,10 +110,10 @@ class _MoviesScreenState extends State<MoviesScreen> {
   Widget _itemBuilder(context, MovieModel model, _) {
     return InkWell(
       onTap: () async {
-        printLog("----------movieScreen: movie item clicked");
+
         currentMovieId = model.videosId;
         // if (await (interstitial.isLoaded as FutureOr<bool>)) {
-        //   printLog("---------ad loaded");
+
         //   interstitial.show();
         //   return;
         // } else {

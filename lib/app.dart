@@ -8,9 +8,9 @@ import 'package:oxoo/service/weather.dart';
 import 'package:provider/provider.dart';
 import '../../bloc/auth/registration_bloc.dart';
 import '../../service/authentication_service.dart';
-import 'bloc/auth/firebase_auth/firebase_auth_bloc.dart';
+
 import 'bloc/auth/login_bloc.dart';
-import 'bloc/auth/phone_auth/phone_auth_bloc.dart';
+
 import 'constants.dart';
 import 'screen/landing_screen.dart';
 import 'service/get_config_service.dart';
@@ -64,13 +64,11 @@ class _MyAppState extends State<MyApp> {
             BlocProvider<LoginBloc>(
               create: (context) => LoginBloc(Repository()),
             ),
-            BlocProvider<PhoneAuthBloc>(create: (context) => PhoneAuthBloc(userRepository: UserRepository())),
+
             BlocProvider<RegistrationBloc>(
               create: (context) => RegistrationBloc(Repository()),
             ),
-            BlocProvider<FirebaseAuthBloc>(
-              create: (context) => FirebaseAuthBloc(Repository()),
-            ),
+
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -92,14 +90,14 @@ class RenderFirstScreen extends StatelessWidget {
       valueListenable: Hive.box<ConfigurationModel>('configBox').listenable(),
       builder: (context, dynamic box, widget) {
         isMandatoryLogin = box.get(0).appConfig.mandatoryLogin;
-        printLog("isMandatoryLogin " + "$isMandatoryLogin");
+
         return renderFirstScreen(isMandatoryLogin!);
       },
     );
   }
 
   Widget renderFirstScreen(bool isMandatoryLogin) {
-    print(isMandatoryLogin);
+
     if (isMandatoryLogin) {
       return LoadingScreen();
     } else {

@@ -37,6 +37,7 @@ class WeatherModel {
 
 
   Future<dynamic> checkCode(String code,String device_id) async{
+
     NetworkHelper networkHelper = NetworkHelper("$API_URL/checkCode4?code=$code&device_id=$device_id&type=ios");
     var checkCodeData = await networkHelper.getData();
     return checkCodeData;
@@ -69,8 +70,7 @@ class WeatherModel {
 
   Future<dynamic> singleDetailsLiveTV(String userCode,String id,String type,String device_id) async{
     NetworkHelper networkHelper = NetworkHelper("$API_URL/single_details?id=28&type=tv&device_id=feb91bb4c0f4e432&code=MM9m6k");
-    print("here is API");
-    print("$API_URL/single_details?id=28&type=tv&device_id=feb91bb4c0f4e432&code=MM9m6k");
+
     var homeContentForAndroidData = await networkHelper.getData();
     return homeContentForAndroidData;
   }

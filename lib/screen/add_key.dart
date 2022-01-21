@@ -6,10 +6,15 @@ import 'package:oxoo/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:device_info/device_info.dart';
+import 'package:platform_device_id/platform_device_id.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../server/repository.dart';
 import 'landing_screen.dart';
 import '../../strings.dart';
+
+
 class AddKeyPage extends StatefulWidget {
   AddKeyPage({this.pageLink});
 
@@ -80,11 +85,19 @@ class _AddKeyPageState extends State<AddKeyPage> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () async {
-          String device_id = await getDeviceDetails();
-          print(device_id);
-          print(userKey);
-          var checkCodeData = await weatherModel.checkCode(userKey, device_id);
-          if (checkCodeData == 208) //key is not correct
+          String? device_id = await PlatformDeviceId.getDeviceId;
+          String? dev_id =device_id?.replaceAll(" ", "");
+          dev_id =dev_id?.replaceAll(",", "");
+          dev_id =dev_id?.replaceAll("/", "");
+          dev_id =dev_id?.replaceAll(".", "");
+          dev_id =dev_id?.replaceAll(";", "");
+          dev_id =dev_id?.replaceAll(")", "");
+          dev_id =dev_id?.replaceAll("(", "");
+
+
+          print("my device id " + dev_id.toString());
+          var checkCodeData = await Repository().checkCode4(userKey, dev_id!);
+          if (checkCodeData == false) //key is not correct
           {
             showDialog<String>(
               context: context,
@@ -100,12 +113,12 @@ class _AddKeyPageState extends State<AddKeyPage> {
               ),
             );
           } else {
+
             final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
             prefs.setString("userKey", userKey);
-            prefs.setString("device_id", device_id);
-            prefs.setString("expire_date", checkCodeData[0]['registration_end_at']);
-            AppContent.expire_date = checkCodeData[0]['registration_end_at'];
+            prefs.setString("device_id", dev_id);
+
             //key is correct
             showDialog<String>(
               barrierDismissible: false, // user must tap button!
@@ -239,7 +252,7 @@ class _AddKeyPageState extends State<AddKeyPage> {
         identifier = data.identifierForVendor; //UUID for iOS
       }
     } on PlatformException {
-      print('Failed to get platform version');
+
     }
 
 //if (!mounted) return;

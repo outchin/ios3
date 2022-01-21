@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+
 import '../../screen/auth/auth_screen.dart';
 import '../../screen/subscription/premium_subscription_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -35,7 +35,7 @@ import '../../widgets/movie/select_download_dialog.dart';
 import '../../widgets/movie/select_server_dialog.dart';
 import '../../widgets/share_btn.dart';
 import '../../widgets/tv_series/cast_crew_item_card.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   static final String route = "/MovieDetailScreen";
@@ -67,19 +67,14 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     SystemChrome.setEnabledSystemUIOverlays([]);
     _permissionReady = false;
     _prepare();
-    FlutterDownloader.registerCallback(downloadCallback);
+
   }
 
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port')!;
-    send.send([id, status, progress]);
-  }
+
 
   _prepare() async {
-    _localPath = (await _findLocalPath()) + Platform.pathSeparator + 'Download';
-    print(_localPath);
+    // _localPath = (await _findLocalPath()) + Platform.pathSeparator + 'Download';
+
     final savedDir = Directory(_localPath!);
     bool hasExisted = await savedDir.exists();
     if (!hasExisted) {
@@ -88,27 +83,18 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     setState(() {});
   }
 
-  Future<String> _findLocalPath() async {
-    _permissionReady = await _checkPermission();
-    late var directory;
-    if (_permissionReady) {
-      directory = platform == TargetPlatform.android
-          ? await getExternalStorageDirectory()
-          : await getApplicationDocumentsDirectory();
-    }
-    return directory.path;
-  }
+  // Future<String> _findLocalPath() async {
+  //   _permissionReady = await _checkPermission();
+  //   late var directory;
+  //   if (_permissionReady) {
+  //     // directory = platform == TargetPlatform.android
+  //     //     ? await getExternalStorageDirectory()
+  //     //     : await getApplicationDocumentsDirectory();
+  //   }
+  //   // return directory.path;
+  // }
 
-  Future<dynamic> downloadVideo(String videoUrl, String fileName) async {
-    if (_permissionReady) {
-      await FlutterDownloader.enqueue(
-          url: videoUrl,
-          savedDir: _localPath!,
-          fileName: fileName,
-          showNotification: true,
-          openFileFromNotification: true);
-    }
-  }
+
 
   ///Getting  Audio File Directory
   Future<List> getTotalDownloadedFile() async {
@@ -118,7 +104,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   ///Check Audio File Exists or Not and Return Bool
   Future<bool> checkVideoPath(String videoName) async {
     final file = await _localFile(videoName: videoName);
-    // print(file.toString());
+
     bool contents = file.existsSync();
     return contents;
   }
@@ -149,40 +135,63 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
           child: BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
             builder: (context, state) {
               if (state is MovieDetailsLoadedState) {
-                movieDetailsModel = state.movieDetails;
-                if (movieDetailsModel.isPaid == "1" && authUser == null) {
-                  SchedulerBinding.instance!.addPostFrameCallback((_) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AuthScreen(
+                if(state.movieDetails != null)
+                  {
+                    movieDetailsModel = state.movieDetails;
+                    if (movieDetailsModel.isPaid == "1" && authUser == null) {
+                      SchedulerBinding.instance!.addPostFrameCallback((_) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AuthScreen(
                                 fromPaidScreen: true,
                               )),
-                    );
-                  });
-                } else {
-                  if (!isUserValidSubscriber &&
-                      movieDetailsModel.isPaid == "1") {
-                    return Scaffold(
-                      backgroundColor:
+                        );
+                      });
+                    } else {
+                      if (!isUserValidSubscriber &&
+                          movieDetailsModel.isPaid == "1") {
+                        return Scaffold(
+                          backgroundColor:
                           isDark! ? CustomTheme.black_window : Colors.white,
-                      body: subscriptionInfoDialog(
-                          context: context,
-                          isDark: isDark!,
-                          userId: authUser!.userId.toString()),
-                    );
-                  } else {
-                    isDownloadEnable =
+                          body: subscriptionInfoDialog(
+                              context: context,
+                              isDark: isDark!,
+                              userId: authUser!.userId.toString()),
+                        );
+                      } else {
+                        isDownloadEnable =
                         movieDetailsModel.enableDownload.toString() == "1"
                             ? true
                             : false;
-                    return buildUI(context, authUser, paymentConfig,
-                        movieDetailsModel.videosId);
-                  }
-                }
-                return spinkit;
+                        return buildUI(context, authUser, paymentConfig,
+                            movieDetailsModel.videosId);
+                      }
+                    }
+                    return spinkit;
+                  }else  //expired
+                    {
+                  return AlertDialog(
+                    title: const Text('Sorry!'),
+                    content: const Text('Your key is expired'),
+                    actions: <Widget>[
+                      TextButton(
+                        // onPressed: () => Navigator.push(context,
+                        //     MaterialPageRoute(builder: (context) {
+                        //       return LandingScreen();
+                        //
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddKeyPage()),
+                        ),
+                        child: const Text('CONTINUE'),
+                      ),
+                    ],
+                  );
+                    }
               } else if (state is MovieDetailsErrorState) {
-                printLog("------------movie details erorr: ${state.message}");
+
                 return AlertDialog(
                   title: const Text('Sorry!'),
                   content: const Text('Your key is expired'),
@@ -219,7 +228,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
           (context, AsyncSnapshot<AllCommentModelList?> allCommentModelList) {
         if (allCommentModelList.connectionState == ConnectionState.none &&
             allCommentModelList.data == null) {
-          //print('project snapshot data is: ${projectSnap.data}');
+
           return SliverToBoxAdapter(
             child: Container(),
           );
@@ -720,12 +729,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       style: ElevatedButton.styleFrom(
                         primary: CustomTheme.primaryColor,),
                       onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  PremiumSubscriptionScreen()),
-                        );
+
                       },
                       child: Text(
                         AppContent.subscribeToPremium,

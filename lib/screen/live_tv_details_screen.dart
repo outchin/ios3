@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:oxoo/screen/add_key.dart';
+import 'package:video_player/video_player.dart';
 import '../../screen/subscription/premium_subscription_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,7 @@ import '../../widgets/share_btn.dart';
 import 'auth/auth_screen.dart';
 import '../constants.dart';
 import '../strings.dart';
+import 'package:video_player_web_hls/video_player_web_hls.dart';
 
 class LiveTvDetailsScreen extends StatefulWidget {
   final String? liveTvId;
@@ -72,7 +74,7 @@ class _LiveTvDetailsScreenState extends State<LiveTvDetailsScreen> {
   //                   LiveTvDetailsScreen(liveTvId: currentliveTvID)));
   //       break;
   //     case AdmobAdEvent.failedToLoad:
-  //       print('Admob $adType failed to load. :(');
+
   //       break;
   //     default:
   //   }
@@ -80,10 +82,10 @@ class _LiveTvDetailsScreenState extends State<LiveTvDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    printLog("_LiveTvDetailsScreenState");
+
     final authService = Provider.of<AuthService>(context);
     AuthUser? authUser = authService.getUser();
-
+    VideoPlayerController _controller;
     return Scaffold(
         backgroundColor:
             isDark ? CustomTheme.primaryColorDark : CustomTheme.whiteColor,
@@ -128,7 +130,17 @@ class _LiveTvDetailsScreenState extends State<LiveTvDetailsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Icon(
+                                  Icons.arrow_back_ios,
+                                  color: Colors.white,
+                                )),
                             if (url != null)
+
+
                               VideoPlayerWidget(
                                 videoUrl: url,
                               ),
@@ -471,15 +483,7 @@ class _LiveTvDetailsScreenState extends State<LiveTvDetailsScreen> {
                         ),
                       ),
                       onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PremiumSubscriptionScreen(
-                                  fromRadioScreen: false,
-                                  fromLiveTvScreen: true,
-                                  liveTvID: widget.liveTvId,
-                                  isPaid: widget.isPaid)),
-                        );
+
                       },
                       child: Text(
                         AppContent.subscribeToPremium,

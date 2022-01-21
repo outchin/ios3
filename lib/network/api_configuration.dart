@@ -13,8 +13,7 @@ class ConfigApi {
     String password = '1234';
     String basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
 
-    print("basic Auth is");
-    print(basicAuth);
+
     /*headers */
     Map<String, String> headers = {'API-KEY': Config.apiKey, 'authorization': basicAuth};
     return headers;

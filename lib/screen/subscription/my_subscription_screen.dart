@@ -28,7 +28,7 @@ class _MySubscriptionScreenState extends State<MySubscriptionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    printLog("_MySubscriptionScreenState");
+
     final authService = Provider.of<AuthService>(context);
     AuthUser authUser = authService.getUser()!;
     return Scaffold(
@@ -57,7 +57,7 @@ class _MySubscriptionScreenState extends State<MySubscriptionScreen> {
             ),
             _space(40),
             InkWell(
-                onTap: () {Navigator.pushNamed(context, PremiumSubscriptionScreen.route);},
+                onTap: () { },
                 child: HelpMe().submitButton(300,AppContent.upgradePurchase)),
           ],
         ),

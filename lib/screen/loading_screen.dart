@@ -31,13 +31,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void isUpdateAvailable() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    //
+    // String version = packageInfo.version;
+    //
 
-    String version = packageInfo.version;
-
-    print('ves');
-    String ver = version[0];
-    int appVersionCode = int.parse(ver);
+    // String ver = version[0];
+    // int appVersionCode = int.parse(ver);
 
 
     WeatherModel weatherModel = WeatherModel();
@@ -49,35 +49,36 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     String latestUpdateVersionCodeStr = configData['apk_version_info']['version_code'];
     int latestUpdateVersionCode = int.parse(latestUpdateVersionCodeStr);
-    print('version code is' + latestUpdateVersionCode.toString());
+
 
 
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String userKey = prefs.getString("userKey") ?? "null";
     String expire_date = prefs.getString("expire_date") ?? "null";
-    print("this is before");
+
     if(userKey != 'null')  //user has key
       {
         AppContent.expire_date = expire_date;
-        print("user has key");
-        print(userKey);
+
+
 
 
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
           return LandingScreen();
+          //return AddKeyPage();
         }),
               (route) => false,
         );
       }else //user doesn't has key
         {
-      print("user doesn t has key");
+
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
         return AddKeyPage();
       }),
         (route) => false,
       );
-          // print('user do not have key 1');
+
           // Navigator.push(context, MaterialPageRoute(builder: (context) {
           //   return  (pageLink: configData['apk_version_info']['page_link']);
           // }));

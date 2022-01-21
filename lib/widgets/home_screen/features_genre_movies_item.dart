@@ -77,8 +77,7 @@ class HomeScreenGenreMoviesList extends StatelessWidget {
                     width: cardWidth,
                     margin: EdgeInsets.only(right: 2),
                     child: InkWell(
-                      /*  onTap: () =>
-                          print("Clicked on: " + moviesList[index].title),*/
+
                       onTap: () {
                         switch (moviesList[index].isTvseries) {
                           case "1":
@@ -101,8 +100,7 @@ class HomeScreenGenreMoviesList extends StatelessWidget {
 
                           default:
                             {
-                              //statements;
-                              print("tv ot others");
+
                             }
                             break;
                         }

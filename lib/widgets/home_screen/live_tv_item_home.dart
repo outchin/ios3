@@ -75,7 +75,7 @@ Widget buildTVItem(BuildContext context, heading, List<TvChannels>? tvList, bool
                   margin: EdgeInsets.only(right: 3),
                   child: InkWell(
                     onTap: () {
-                      print("---------" + tvList.elementAt(index).liveTvId.toString());
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -107,9 +107,9 @@ Widget buildTVItem(BuildContext context, heading, List<TvChannels>? tvList, bool
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                        tvList[index].tvName!,
+                                        tvList[index].tvName,
                                       overflow: TextOverflow.ellipsis,
-                                      style: isDark! ? CustomTheme.smallTextWhite.copyWith(fontSize: 13) : CustomTheme.smallText.copyWith(fontSize: 13)
+                                      style: isDark ? CustomTheme.smallTextWhite.copyWith(fontSize: 13) : CustomTheme.smallText.copyWith(fontSize: 13)
                                     ),
 
                                   ],
@@ -132,7 +132,7 @@ Widget buildTVItem(BuildContext context, heading, List<TvChannels>? tvList, bool
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) => InkWell(
                 onTap: () {
-                  print(tvList.elementAt(index).liveTvId);
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -31,7 +31,7 @@ class _MoviesScreenByStarIDState extends State<MoviesScreenByStarID> {
 
   @override
   Widget build(BuildContext context) {
-    printLog("_MoviesScreenByStarIDState");
+
     final routes =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
@@ -56,7 +56,7 @@ class _MoviesScreenByStarIDState extends State<MoviesScreenByStarID> {
             return spinkit;
           },
           pageFuture: (pageIndex) {
-            print(pageIndex);
+
             String pageNumber = (pageIndex! * PAGE_NUMBER + 1).toString();
             return Repository()
                 .getMovieByStarID(pageNumber, starID)

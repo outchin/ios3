@@ -8,7 +8,7 @@ import 'movie_details_youtube_player.dart';
 
 class SelectServerDialog {
   createDialog(context, List<Videos> videos, bool? isDark) {
-    print(videos.length);
+
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -50,7 +50,7 @@ class SelectServerDialog {
                                 child: InkWell(
                                   onTap: () {
                                     //Navigator.of(context).pop();
-                                    printLog("--------------servertype: ${videos.elementAt(index).fileType}");
+
                                     switch (videos.elementAt(index).fileType!.toLowerCase()) {
                                       case "youtube":
                                         {
@@ -106,7 +106,7 @@ class SelectServerDialog {
                                 padding: const EdgeInsets.symmetric(vertical: 4),
                                 child: InkWell(
                                   onTap: () {
-                                    print("---------video_url:${videos.elementAt(index).fileUrl}");
+
                                     Navigator.of(context).pop();
                                     switch (videos.elementAt(index).fileType!.toLowerCase()) {
                                       case "youtube":

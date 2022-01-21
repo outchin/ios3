@@ -66,7 +66,7 @@ class ImageSlider extends StatelessWidget {
 
                     default:
                       {
-                        printLog("Inside_others!");
+
                       }
                   }
                 },

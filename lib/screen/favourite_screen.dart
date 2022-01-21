@@ -55,7 +55,7 @@ class FavouriteScreen extends StatelessWidget {
                 loadingBuilder: this._loadingBuilder,
                 noItemsFoundBuilder: this._noItemFounnd,
                 pageFuture: (pageIndex) {
-                  printLog(pageIndex);
+
                   String pageNumber = (pageIndex! * PAGE_NUMBER + 1).toString();
                   return Repository().favouriteData(authUser!.userId, pageNumber).then((value) => value!);
                 }),

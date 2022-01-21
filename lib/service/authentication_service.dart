@@ -6,7 +6,7 @@ class AuthService{
   var box = Hive.box<AuthUser>('oxooUser');
   //Note: update user data
   void updateUser(AuthUser user) async{
-    // print(user.toJson().toString());
+
     await box.put(0, user);
   }
   //Note: get user data from phone
